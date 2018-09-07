@@ -237,6 +237,20 @@ spec:
         )
       record: node:node_net_utilisation:sum_irate
     - expr: |
+        sum by (node) (
+          irate(node_network_transmit_bytes{job="node-exporter",device="eth0"}[1m])
+        * on (namespace, pod) group_left(node)
+          node_namespace_pod:kube_pod_info:
+        )
+      record: node:node_net_bytes_transmitted:sum_irate
+    - expr: |
+        sum by (node) (
+          irate(node_network_receive_bytes{job="node-exporter",device="eth0"}[1m])
+        * on (namespace, pod) group_left(node)
+          node_namespace_pod:kube_pod_info:
+        )
+      record: node:node_net_bytes_received:sum_irate
+    - expr: |
         sum(irate(node_network_receive_drop{job="node-exporter",device="eth0"}[1m])) +
         sum(irate(node_network_transmit_drop{job="node-exporter",device="eth0"}[1m]))
       record: :node_net_saturation:sum_irate
