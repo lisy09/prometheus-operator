@@ -17,6 +17,9 @@ spec:
         sum(container_memory_usage_bytes{job="kubelet", image!=""}) by (namespace)
       record: namespace:container_memory_usage_bytes:sum
     - expr: |
+        sum(container_memory_usage_bytes{job="kubelet", image!=""} - container_memory_cache{job="kubelet", image!=""}) by (namespace)
+      record: namespace:container_memory_usage_bytes_wo_cache:sum
+    - expr: |
         sum by (namespace, label_name) (
            sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!=""}[5m])) by (namespace, pod_name)
          * on (namespace, pod_name) group_left(label_name)
