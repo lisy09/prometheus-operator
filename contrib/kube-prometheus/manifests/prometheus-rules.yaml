@@ -89,7 +89,6 @@ spec:
           node_namespace_pod:kube_pod_info:
         )
       record: node:data_volume_iops_reads:sum
-
     - expr: |
         sum by (node) (
           irate(node_disk_writes_completed{job="node-exporter", device!="vda"}[5m])
