@@ -22,6 +22,8 @@ spec:
     matchLabels:
       prometheus: k8s
       role: alert-rules
+  retention: 7d
+  scrapeInterval: 1m
   serviceAccountName: prometheus-k8s
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
