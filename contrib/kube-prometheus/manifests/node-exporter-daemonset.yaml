@@ -19,7 +19,7 @@ spec:
         - --web.listen-address=127.0.0.1:9101
         - --path.procfs=/host/proc
         - --path.sysfs=/host/sys
-        image: quay.io/prometheus/node-exporter:v0.15.2
+        image: dockerhub.qingcloud.com/prometheus/node-exporter:v0.15.2
         name: node-exporter
         resources:
           limits:
@@ -38,7 +38,7 @@ spec:
       - args:
         - --secure-listen-address=:9100
         - --upstream=http://127.0.0.1:9101/
-        image: quay.io/coreos/kube-rbac-proxy:v0.3.1
+        image: dockerhub.qingcloud.com/coreos/kube-rbac-proxy:v0.3.1
         name: kube-rbac-proxy
         ports:
         - containerPort: 9100

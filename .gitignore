@@ -12,6 +12,9 @@ __pycache__
 .history/
 .vscode/
 tmp
+vendor/github.com/prometheus/client_model/.classpath
+vendor/github.com/prometheus/client_model/.project
+vendor/github.com/prometheus/client_model/.settings/
 
 # These are empty target files, created on every docker build. Their sole
 # purpose is to track the last target execution time to evalualte, whether the
