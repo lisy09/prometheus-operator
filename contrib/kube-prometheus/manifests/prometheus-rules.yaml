@@ -46,11 +46,11 @@ spec:
         ))
       record: node:node_num_cpu:sum
     - expr: |
-        1 - avg(rate(node_cpu{job="node-exporter",mode="idle"}[1m]))
+        1 - avg(irate(node_cpu{job="node-exporter",mode="idle"}[5m]))
       record: :node_cpu_utilisation:avg1m
     - expr: |
         1 - avg by (node) (
-          rate(node_cpu{job="node-exporter",mode="idle"}[1m])
+          irate(node_cpu{job="node-exporter",mode="idle"}[5m])
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:)
       record: node:node_cpu_utilisation:avg1m
@@ -111,27 +111,27 @@ spec:
         )
       record: node:data_volume_throughput_bytes_written:sum
     - expr: |
-        sum(irate(node_network_receive_bytes{job="node-exporter",device="eth0"}[1m])) +
-        sum(irate(node_network_transmit_bytes{job="node-exporter",device="eth0"}[1m]))
+        sum(irate(node_network_receive_bytes{job="node-exporter",device="eth0"}[5m])) +
+        sum(irate(node_network_transmit_bytes{job="node-exporter",device="eth0"}[5m]))
       record: :node_net_utilisation:sum_irate
     - expr: |
         sum by (node) (
-          (irate(node_network_receive_bytes{job="node-exporter",device="eth0"}[1m]) +
-          irate(node_network_transmit_bytes{job="node-exporter",device="eth0"}[1m]))
+          (irate(node_network_receive_bytes{job="node-exporter",device="eth0"}[5m]) +
+          irate(node_network_transmit_bytes{job="node-exporter",device="eth0"}[5m]))
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
         )
       record: node:node_net_utilisation:sum_irate
     - expr: |
         sum by (node) (
-          irate(node_network_transmit_bytes{job="node-exporter",device="eth0"}[1m])
+          irate(node_network_transmit_bytes{job="node-exporter",device="eth0"}[5m])
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
         )
       record: node:node_net_bytes_transmitted:sum_irate
     - expr: |
         sum by (node) (
-          irate(node_network_receive_bytes{job="node-exporter",device="eth0"}[1m])
+          irate(node_network_receive_bytes{job="node-exporter",device="eth0"}[5m])
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
         )
