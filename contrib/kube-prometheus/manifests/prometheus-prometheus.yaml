@@ -28,3 +28,10 @@ spec:
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
   version: v2.3.1
+  storage:
+    volumeClaimTemplate:
+      spec:
+        #storageClassName: qingcloud-storageclass
+        resources:
+          requests:
+            storage: 20Gi
