@@ -136,3 +136,25 @@ spec:
           node_namespace_pod:kube_pod_info:
         )
       record: node:node_net_bytes_received:sum_irate
+    - expr: |
+        max(
+          max(
+            kube_pod_info{job="kube-state-metrics", host_ip!=""}
+          ) by (node, host_ip)
+          * on (host_ip) group_right (node)
+          label_replace(
+            (max(node_filesystem_files{mountpoint="/"}) by (instance)), "host_ip", "$1", "instance", "(.*):.*"
+          )
+        ) by (node)
+      record: 'node:disk_inodes_total:'
+    - expr: |
+        max(
+          max(
+            kube_pod_info{job="kube-state-metrics", host_ip!=""}
+          ) by (node, host_ip)
+          * on (host_ip) group_right (node)
+          label_replace(
+            (max(node_filesystem_files_free{mountpoint="/"}) by (instance)), "host_ip", "$1", "instance", "(.*):.*"
+          )
+        ) by (node)
+      record: 'node:disk_inodes_free:'
