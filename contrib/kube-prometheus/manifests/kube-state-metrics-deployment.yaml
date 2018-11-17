@@ -51,7 +51,7 @@ spec:
         - --port=8081
         - --telemetry-host=127.0.0.1
         - --telemetry-port=8082
-        image: dockerhub.qingcloud.com/coreos/kube-state-metrics:v1.3.1
+        image: dockerhub.qingcloud.com/coreos/kube-state-metrics:v1.3.2
         name: kube-state-metrics
         resources:
           limits:
