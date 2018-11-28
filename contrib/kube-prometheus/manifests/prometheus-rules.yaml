@@ -84,28 +84,28 @@ spec:
       record: 'node:node_memory_utilisation:'
     - expr: |
         sum by (node) (
-          irate(node_disk_reads_completed{job="node-exporter", device!="vda"}[5m])
+          irate(node_disk_reads_completed{job="node-exporter"}[5m])
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
         )
       record: node:data_volume_iops_reads:sum
     - expr: |
         sum by (node) (
-          irate(node_disk_writes_completed{job="node-exporter", device!="vda"}[5m])
+          irate(node_disk_writes_completed{job="node-exporter"}[5m])
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
         )
       record: node:data_volume_iops_writes:sum
     - expr: |
         sum by (node) (
-          irate(node_disk_bytes_read{job="node-exporter", device!="vda"}[5m])
+          irate(node_disk_bytes_read{job="node-exporter"}[5m])
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
         )
       record: node:data_volume_throughput_bytes_read:sum
     - expr: |
         sum by (node) (
-          irate(node_disk_bytes_written{job="node-exporter", device!="vda"}[5m])
+          irate(node_disk_bytes_written{job="node-exporter"}[5m])
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
         )
