@@ -19,7 +19,7 @@ spec:
         - --web.listen-address=127.0.0.1:9101
         - --path.procfs=/host/proc
         - --path.sysfs=/host/sys
-        image: dockerhub.qingcloud.com/prometheus/node-exporter:v0.15.2
+        image: dockerhub.qingcloud.com/prometheus/node-exporter:ks-v0.15.3 
         name: node-exporter
         resources:
           limits:
