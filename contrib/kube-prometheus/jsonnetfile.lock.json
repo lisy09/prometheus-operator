@@ -24,11 +24,11 @@
             "name": "kubernetes-mixin",
             "source": {
                 "git": {
-                    "remote": "https://github.com/kubernetes-monitoring/kubernetes-mixin",
+                    "remote": "https://github.com/kubesphere/kubernetes-mixin",
                     "subdir": ""
                 }
             },
-            "version": "d0209e896df07f049cf092c42ca951547aaa5bb7"
+            "version": "f94bf34647e6edf62028c87d0b4e6375006fa4d1"
         },
         {
             "name": "grafonnet",
