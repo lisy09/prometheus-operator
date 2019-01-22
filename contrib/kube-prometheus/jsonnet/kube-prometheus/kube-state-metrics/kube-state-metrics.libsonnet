@@ -6,7 +6,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
     kubeStateMetrics+:: {
       collectors: '',  // empty string gets a default set
-      scrapeInterval: '30s',
+      scrapeInterval: '1m',
       scrapeTimeout: '30s',
 
       baseCPU: '100m',
@@ -298,7 +298,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             {
               port: 'https-self',
               scheme: 'https',
-              interval: '30s',
+              interval: '1m',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               tlsConfig: {
                 insecureSkipVerify: true,

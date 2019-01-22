@@ -22,6 +22,8 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       rules: {},
       renderedRules: {},
       namespaces: ['default', 'kube-system', $._config.namespace],
+      retention: '7d',
+      scrapeInterval: '1m',
     },
   },
 
@@ -213,7 +215,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           endpoints: [
             {
               port: 'web',
-              interval: '30s',
+              interval: '1m',
             },
           ],
         },
@@ -234,7 +236,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           endpoints: [
             {
               port: 'http-metrics',
-              interval: '30s',
+              interval: '1m',
             },
           ],
           selector: {
@@ -266,7 +268,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             {
               port: 'https-metrics',
               scheme: 'https',
-              interval: '30s',
+              interval: '1m',
               honorLabels: true,
               tlsConfig: {
                 insecureSkipVerify: true,
@@ -277,7 +279,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
               port: 'https-metrics',
               scheme: 'https',
               path: '/metrics/cadvisor',
-              interval: '30s',
+              interval: '1m',
               honorLabels: true,
               tlsConfig: {
                 insecureSkipVerify: true,
@@ -313,7 +315,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           endpoints: [
             {
               port: 'http-metrics',
-              interval: '30s',
+              interval: '1m',
               metricRelabelings: [
                 {
                   sourceLabels: ['__name__'],
@@ -362,7 +364,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           endpoints: [
             {
               port: 'https',
-              interval: '30s',
+              interval: '1m',
               scheme: 'https',
               tlsConfig: {
                 caFile: '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt',
@@ -406,7 +408,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           endpoints: [
             {
               port: 'metrics',
-              interval: '15s',
+              interval: '30s',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
             },
           ],
