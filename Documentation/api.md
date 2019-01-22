@@ -34,6 +34,8 @@ This Document documents the types introduced by the Prometheus Operator to be co
 * [RemoteWriteSpec](#remotewritespec)
 * [Rule](#rule)
 * [RuleGroup](#rulegroup)
+* [Rules](#rules)
+* [RulesAlert](#rulesalert)
 * [ServiceMonitor](#servicemonitor)
 * [ServiceMonitorList](#servicemonitorlist)
 * [ServiceMonitorSpec](#servicemonitorspec)
@@ -276,6 +278,7 @@ PrometheusSpec is a specification of the desired behavior of the Prometheus clus
 | logLevel | Log level for Prometheus to be configured with. | string | false |
 | scrapeInterval | Interval between consecutive scrapes. | string | false |
 | evaluationInterval | Interval between consecutive evaluations. | string | false |
+| rules | /--rules.*/ command-line arguments. | [Rules](#rules) | false |
 | externalLabels | The labels to add to any time series or alerts when communicating with external systems (federation, remote storage, Alertmanager). | map[string]string | false |
 | externalUrl | The external URL the Prometheus instances will be available under. This is necessary to generate correct URLs. This is necessary if Prometheus is not served from root of a DNS name. | string | false |
 | routePrefix | The route prefix Prometheus registers HTTP handlers for. This is useful, if using ExternalURL and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`. | string | false |
@@ -426,6 +429,28 @@ RuleGroup is a list of sequentially evaluated recording and alerting rules.
 
 [Back to TOC](#table-of-contents)
 
+## Rules
+
+/--rules.*/ command-line arguments
+
+| Field | Description | Scheme | Required |
+| ----- | ----------- | ------ | -------- |
+| alert |  | [RulesAlert](#rulesalert) | false |
+
+[Back to TOC](#table-of-contents)
+
+## RulesAlert
+
+/--rules.alert.*/ command-line arguments
+
+| Field | Description | Scheme | Required |
+| ----- | ----------- | ------ | -------- |
+| forOutageTolerance | Max time to tolerate prometheus outage for restoring 'for' state of alert. | string | false |
+| forGracePeriod | Minimum duration between alert and restored 'for' state. This is maintained only for alerts with configured 'for' time greater than grace period. | string | false |
+| resendDelay | Minimum amount of time to wait before resending an alert to Alertmanager. | string | false |
+
+[Back to TOC](#table-of-contents)
+
 ## ServiceMonitor
 
 ServiceMonitor defines monitoring for a set of services.
@@ -491,7 +516,7 @@ TLSConfig specifies TLS configuration parameters.
 
 ## ThanosGCSSpec
 
-ThanosGCSSpec defines parameters for use of Google Cloud Storage (GCS) with Thanos.
+Deprecated: ThanosGCSSpec should be configured with an ObjectStorageConfig secret starting with Thanos v0.2.0. ThanosGCSSpec will be removed.
 
 | Field | Description | Scheme | Required |
 | ----- | ----------- | ------ | -------- |
@@ -502,7 +527,7 @@ ThanosGCSSpec defines parameters for use of Google Cloud Storage (GCS) with Than
 
 ## ThanosS3Spec
 
-ThanosS3Spec defines parameters for of AWS Simple Storage Service (S3) with Thanos. (S3 compatible services apply as well)
+Deprecated: ThanosS3Spec should be configured with an ObjectStorageConfig secret starting with Thanos v0.2.0. ThanosS3Spec will be removed.
 
 | Field | Description | Scheme | Required |
 | ----- | ----------- | ------ | -------- |
@@ -529,7 +554,8 @@ ThanosSpec defines parameters for a Prometheus server within a Thanos deployment
 | sha | SHA of Thanos container image to be deployed. Defaults to the value of `version`. Similar to a tag, but the SHA explicitly deploys an immutable container image. Version and Tag are ignored if SHA is set. | *string | false |
 | baseImage | Thanos base image if other than default. | *string | false |
 | resources | Resources defines the resource requirements for the Thanos sidecar. If not provided, no requests/limits will be set | [v1.ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#resourcerequirements-v1-core) | false |
-| gcs | GCS configures use of GCS in Thanos. | *[ThanosGCSSpec](#thanosgcsspec) | false |
-| s3 | S3 configures use of S3 in Thanos. | *[ThanosS3Spec](#thanoss3spec) | false |
+| gcs | Deprecated: GCS should be configured with an ObjectStorageConfig secret starting with Thanos v0.2.0. This field will be removed. | *[ThanosGCSSpec](#thanosgcsspec) | false |
+| s3 | Deprecated: S3 should be configured with an ObjectStorageConfig secret starting with Thanos v0.2.0. This field will be removed. | *[ThanosS3Spec](#thanoss3spec) | false |
+| objectStorageConfig | ObjectStorageConfig configures object storage in Thanos. | *[v1.SecretKeySelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#secretkeyselector-v1-core) | false |
 
 [Back to TOC](#table-of-contents)

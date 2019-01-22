@@ -35,7 +35,7 @@ import (
 const (
 	governingServiceName     = "prometheus-operated"
 	DefaultPrometheusVersion = "v2.5.0"
-	DefaultThanosVersion     = "v0.1.0"
+	DefaultThanosVersion     = "v0.2.1"
 	defaultRetention         = "24h"
 	storageDir               = "/prometheus"
 	confDir                  = "/etc/prometheus/config"
@@ -343,6 +343,18 @@ func makeStatefulSetSpec(p monitoringv1.Prometheus, c *Config, ruleConfigMapName
 			promArgs = append(promArgs,
 				fmt.Sprintf("-query.lookback-delta=%s", *p.Spec.Query.LookbackDelta),
 			)
+		}
+
+		if version.Minor >= 4 {
+			if p.Spec.Rules.Alert.ForOutageTolerance != "" {
+				promArgs = append(promArgs, "-rules.alert.for-outage-tolerance="+p.Spec.Rules.Alert.ForOutageTolerance)
+			}
+			if p.Spec.Rules.Alert.ForGracePeriod != "" {
+				promArgs = append(promArgs, "-rules.alert.for-grace-period="+p.Spec.Rules.Alert.ForGracePeriod)
+			}
+			if p.Spec.Rules.Alert.ResendDelay != "" {
+				promArgs = append(promArgs, "-rules.alert.resend-delay="+p.Spec.Rules.Alert.ResendDelay)
+			}
 		}
 	default:
 		return nil, errors.Errorf("unsupported Prometheus major version %s", version)
@@ -669,6 +681,17 @@ func makeStatefulSetSpec(p monitoringv1.Prometheus, c *Config, ruleConfigMapName
 				},
 			},
 		}
+
+		if p.Spec.Thanos.ObjectStorageConfig != nil {
+			envVars = append(envVars, v1.EnvVar{
+				Name: "OBJSTORE_CONFIG",
+				ValueFrom: &v1.EnvVarSource{
+					SecretKeyRef: p.Spec.Thanos.ObjectStorageConfig,
+				},
+			})
+			thanosArgs = append(thanosArgs, "--objstore.config=$(OBJSTORE_CONFIG)")
+		}
+
 		if p.Spec.Thanos.GCS != nil {
 			if p.Spec.Thanos.GCS.Bucket != nil {
 				thanosArgs = append(thanosArgs, fmt.Sprintf("--gcs.bucket=%s", *p.Spec.Thanos.GCS.Bucket))

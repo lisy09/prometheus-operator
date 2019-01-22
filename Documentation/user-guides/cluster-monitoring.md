@@ -61,8 +61,8 @@ spec:
         - --kubelet-service=kube-system/kubelet
         - --logtostderr=true
         - --config-reloader-image=quay.io/coreos/configmap-reload:v0.0.1
-        - --prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.26.0
-        image: quay.io/coreos/prometheus-operator:v0.26.0
+        - --prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.27.0
+        image: quay.io/coreos/prometheus-operator:v0.27.0
         name: prometheus-operator
         ports:
         - containerPort: 8080
@@ -322,7 +322,7 @@ spec:
         - --port=8081
         - --telemetry-host=127.0.0.1
         - --telemetry-port=8082
-        image: quay.io/coreos/kube-state-metrics:v1.4.0
+        image: quay.io/coreos/kube-state-metrics:v1.5.0
         name: kube-state-metrics
         resources:
           limits:

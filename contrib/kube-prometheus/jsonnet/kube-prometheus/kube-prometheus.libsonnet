@@ -16,6 +16,27 @@ local configMapList = k.core.v1.configMapList;
   },
   grafana+:: {
     dashboardDefinitions: configMapList.new(super.dashboardDefinitions),
+    serviceMonitor: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'ServiceMonitor',
+      metadata: {
+        name: 'grafana',
+        namespace: $._config.namespace,
+      },
+      spec: {
+        selector: {
+          matchLabels: {
+            app: 'grafana',
+          },
+        },
+        endpoints: [
+          {
+            port: 'http',
+            interval: '15s',
+          },
+        ],
+      },
+    },
   },
 } + {
   _config+:: {
