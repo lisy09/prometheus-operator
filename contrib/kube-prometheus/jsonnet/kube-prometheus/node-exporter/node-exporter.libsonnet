@@ -66,6 +66,10 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                                toleration.withEffect('NoSchedule') +
                                toleration.withKey('node-role.kubernetes.io/master');
 
+      local dedicatedToleration = toleration.new() +
+                                  toleration.withKey('dedicated') +
+                                  toleration.withOperator('Exists');
+
       local procVolumeName = 'proc';
       local procVolume = volume.fromHostPath(procVolumeName, '/proc');
       local procVolumeMount = containerVolumeMount.new(procVolumeName, '/host/proc');
@@ -125,7 +129,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       daemonset.mixin.metadata.withLabels(podLabels) +
       daemonset.mixin.spec.selector.withMatchLabels(podLabels) +
       daemonset.mixin.spec.template.metadata.withLabels(podLabels) +
-      daemonset.mixin.spec.template.spec.withTolerations([masterToleration]) +
+      daemonset.mixin.spec.template.spec.withTolerations([masterToleration, dedicatedToleration]) +
       daemonset.mixin.spec.template.spec.withNodeSelector({ 'beta.kubernetes.io/os': 'linux' }) +
       daemonset.mixin.spec.template.spec.withContainers(c) +
       daemonset.mixin.spec.template.spec.withVolumes([procVolume, sysVolume, rootVolume]) +
