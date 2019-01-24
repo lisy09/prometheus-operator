@@ -18,10 +18,12 @@ spec:
   resources:
     requests:
       memory: 400Mi
+  retention: 7d
   ruleSelector:
     matchLabels:
       prometheus: k8s
       role: alert-rules
+  scrapeInterval: 1m
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
@@ -29,4 +31,10 @@ spec:
   serviceAccountName: prometheus-k8s
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
+  storage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: 20Gi
   version: v2.5.0
