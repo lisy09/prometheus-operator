@@ -203,9 +203,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             ],
           },
           securityContext: {
-            runAsUser: 1000,
-            runAsNonRoot: true,
-            fsGroup: 2000,
+            runAsUser: 0,
+            runAsNonRoot: false,
+            fsGroup: 0,
           },
         },
       },
