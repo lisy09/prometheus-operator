@@ -149,7 +149,7 @@ Here's [example.jsonnet](example.jsonnet):
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
-    namespace: 'monitoring',
+    namespace: 'kubesphere-monitoring-system',
   },
 };
 

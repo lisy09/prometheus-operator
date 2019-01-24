@@ -12,7 +12,7 @@ As a basis, all examples in this guide are based on the base example of the kube
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
-    namespace: 'monitoring',
+    namespace: 'kubesphere-monitoring-system',
   },
 };
 

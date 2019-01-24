@@ -915,7 +915,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-k8s-cluster-rsrc-use
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     k8s-node-rsrc-use.json: |-
@@ -1858,7 +1858,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-k8s-node-rsrc-use
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     k8s-resources-cluster.json: |-
@@ -3186,7 +3186,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-k8s-resources-cluster
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     k8s-resources-namespace.json: |-
@@ -4025,7 +4025,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-k8s-resources-namespace
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     k8s-resources-pod.json: |-
@@ -4891,7 +4891,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-k8s-resources-pod
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     nodes.json: |-
@@ -6203,7 +6203,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-nodes
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     persistentvolumesusage.json: |-
@@ -6546,7 +6546,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-persistentvolumesusage
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     pods.json: |-
@@ -7030,7 +7030,7 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-pods
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 - apiVersion: v1
   data:
     statefulset.json: |-
@@ -7887,5 +7887,5 @@ items:
   kind: ConfigMap
   metadata:
     name: grafana-dashboard-statefulset
-    namespace: monitoring
+    namespace: kubesphere-monitoring-system
 kind: ConfigMapList
