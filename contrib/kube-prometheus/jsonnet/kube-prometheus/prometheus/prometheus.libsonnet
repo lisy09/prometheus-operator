@@ -24,6 +24,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       namespaces: ['default', 'kube-system', $._config.namespace],
       retention: '7d',
       scrapeInterval: '1m',
+      query: {
+        maxConcurrency: 200 
+      },
       storage: {
         volumeClaimTemplate: {
           spec: {
@@ -182,6 +185,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           replicas: $._config.prometheus.replicas,
           retention: $._config.prometheus.retention,
           scrapeInterval: $._config.prometheus.scrapeInterval,
+          query: $._config.prometheus.query,
           storage: $._config.prometheus.storage,
           version: $._config.versions.prometheus,
           baseImage: $._config.imageRepos.prometheus,
