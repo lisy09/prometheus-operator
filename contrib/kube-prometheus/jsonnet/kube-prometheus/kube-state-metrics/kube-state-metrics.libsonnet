@@ -67,6 +67,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                                'daemonsets',
                                'deployments',
                                'replicasets',
+                               'ingresses',
                              ]) +
                              rulesType.withVerbs(['list', 'watch']);
 
