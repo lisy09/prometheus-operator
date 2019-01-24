@@ -25,9 +25,9 @@ spec:
       role: alert-rules
   scrapeInterval: 1m
   securityContext:
-    fsGroup: 2000
-    runAsNonRoot: true
-    runAsUser: 1000
+    fsGroup: 0
+    runAsNonRoot: false
+    runAsUser: 0
   serviceAccountName: prometheus-k8s
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
