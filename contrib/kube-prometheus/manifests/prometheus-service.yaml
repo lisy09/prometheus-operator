@@ -6,7 +6,6 @@ metadata:
   name: prometheus-k8s
   namespace: kubesphere-monitoring-system
 spec:
-  clusterIP: None
   ports:
   - name: web
     port: 9090
