@@ -50,7 +50,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'etcd',
-          namespace: 'kube-system',
+          namespace: 'kubesphere-monitoring-system',
           labels: {
             'k8s-app': 'etcd',
           },
@@ -60,7 +60,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           endpoints: [
             {
               port: 'metrics',
-              interval: '30s',
+              interval: '1m',
               scheme: 'https',
               // Prometheus Operator (and Prometheus) allow us to specify a tlsConfig. This is required as most likely your etcd metrics end points is secure.
               tlsConfig: {
@@ -76,6 +76,11 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             matchLabels: {
               'k8s-app': 'etcd',
             },
+          },
+          namespaceSelector: {
+            matchNames: [
+              'kube-system',
+            ],
           },
         },
       },

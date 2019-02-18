@@ -1,6 +1,14 @@
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+           (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + {
   _config+:: {
     namespace: 'kubesphere-monitoring-system',
+    etcd+:: {
+      ips: ['127.0.0.1'],
+      clientCA: importstr 'examples/etcd-client-ca.crt',
+      clientKey: importstr 'examples/etcd-client.key',
+      clientCert: importstr 'examples/etcd-client.crt',
+      serverName: 'etcd.kube-system.svc.cluster.local',
+    },
   },
 };
 
