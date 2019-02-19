@@ -156,6 +156,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       service.mixin.metadata.withLabels({ 'k8s-app': 'prometheus-operator' }) +
       service.mixin.metadata.withNamespace($._config.namespace) +
       service.mixin.spec.withClusterIp('None'),
+    /*
     serviceMonitor:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -181,5 +182,6 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
+    */
   },
 }

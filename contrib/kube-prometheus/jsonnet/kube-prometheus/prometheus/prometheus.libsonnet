@@ -238,6 +238,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           ],
         },
       },
+    /*
     serviceMonitorKubeScheduler:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -269,6 +270,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
+    */
     serviceMonitorKubelet:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -317,6 +319,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
+    /*
     serviceMonitorKubeControllerManager:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -355,6 +358,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
+    */
     serviceMonitorApiserver:
       {
         apiVersion: 'monitoring.coreos.com/v1',
