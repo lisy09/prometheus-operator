@@ -8,7 +8,7 @@
                     "subdir": "contrib/kube-prometheus/jsonnet/kube-prometheus"
                 }
             },
-            "version": "34402f4a60b258f329667dc593f0d34de8528565"
+            "version": "0b78d8708108d41844cd1006ee1905e71f9236c0"
         },
         {
             "name": "ksonnet",
@@ -64,11 +64,11 @@
             "name": "prometheus-operator",
             "source": {
                 "git": {
-                    "remote": "https://github.com/coreos/prometheus-operator",
+                    "remote": "https://github.com/kubesphere/prometheus-operator",
                     "subdir": "jsonnet/prometheus-operator"
                 }
             },
-            "version": "174c9bf17bec78b055e8e63c6ae3a3dc9bb0a3a8"
+            "version": "0b78d8708108d41844cd1006ee1905e71f9236c0"
         },
         {
             "name": "etcd-mixin",
