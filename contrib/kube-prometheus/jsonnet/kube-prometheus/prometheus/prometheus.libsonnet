@@ -18,7 +18,8 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
     prometheus+:: {
       name: 'k8s',
-      replicas: 2,
+      systemName: 'k8s-system',
+      replicas: 1,
       rules: {},
       renderedRules: {},
       namespaces: ['default', 'kube-system', $._config.namespace],
@@ -56,7 +57,42 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       service.new('prometheus-' + $._config.prometheus.name, { app: 'prometheus', prometheus: $._config.prometheus.name }, prometheusPort) +
       service.mixin.spec.withSessionAffinity('ClientIP') +
       service.mixin.metadata.withNamespace($._config.namespace) +
-      service.mixin.metadata.withLabels({ prometheus: $._config.prometheus.name }),
+      service.mixin.metadata.withLabels({ prometheus: $._config.prometheus.name }) +
+      service.mixin.spec.withClusterIp('None'),
+    serviceSystem:
+      local service = k.core.v1.service;
+      local servicePort = k.core.v1.service.mixin.spec.portsType;
+
+      local prometheusPort = servicePort.newNamed('web', 9090, 'web');
+
+      service.new('prometheus-' + $._config.prometheus.systemName, { app: 'prometheus', prometheus: $._config.prometheus.systemName }, prometheusPort) +
+      service.mixin.spec.withSessionAffinity('ClientIP') +
+      service.mixin.metadata.withNamespace($._config.namespace) +
+      service.mixin.metadata.withLabels({ prometheus: $._config.prometheus.systemName }) +
+      service.mixin.spec.withClusterIp('None'),
+    serviceKubeScheduler:
+      local service = k.core.v1.service;
+      local servicePort = k.core.v1.service.mixin.spec.portsType;
+
+      local kubeSchedulerServicePort = servicePort.newNamed('http-metrics', 10251, 10251);
+
+      service.new('kube-scheduler', null, kubeSchedulerServicePort) +
+      service.mixin.metadata.withNamespace('kube-system') +
+      service.mixin.metadata.withLabels({ 'k8s-app': 'kube-scheduler' }) +
+      service.mixin.spec.withClusterIp('None') +
+      service.mixin.spec.withSelector({ 'component': 'kube-scheduler' }),
+    serviceKubeControllerManager:
+      local service = k.core.v1.service;
+      local servicePort = k.core.v1.service.mixin.spec.portsType;
+
+      local kubeControllerManagerServicePort = servicePort.newNamed('http-metrics', 10252, 10252);
+
+      service.new('kube-controller-manager', null, kubeControllerManagerServicePort) +
+      service.mixin.metadata.withNamespace('kube-system') +
+      service.mixin.metadata.withLabels({ 'k8s-app': 'kube-controller-manager' }) +
+      service.mixin.spec.withClusterIp('None') +
+      service.mixin.spec.withSelector({ 'component': 'kube-controller-manager' }),
+
     [if $._config.prometheus.rules != null && $._config.prometheus.rules != {} then 'rules']:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -189,7 +225,60 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           version: $._config.versions.prometheus,
           baseImage: $._config.imageRepos.prometheus,
           serviceAccountName: 'prometheus-' + $._config.prometheus.name,
-          serviceMonitorSelector: {},
+          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['kube-state-metrics', 'node-exporter', 'kubelet', 'prometheus-system']}]},
+          serviceMonitorNamespaceSelector: {},
+          nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
+          ruleSelector: selector.withMatchLabels({
+            role: 'alert-rules',
+            prometheus: $._config.prometheus.name,
+          }),
+          resources: resources,
+          alerting: {
+            alertmanagers: [
+              {
+                namespace: $._config.namespace,
+                name: 'alertmanager-' + $._config.alertmanager.name,
+                port: 'web',
+              },
+            ],
+          },
+          securityContext: {
+            runAsUser: 0,
+            runAsNonRoot: false,
+            fsGroup: 0,
+          },
+        },
+      },
+    prometheusSystem:
+      local statefulSet = k.apps.v1beta2.statefulSet;
+      local container = statefulSet.mixin.spec.template.spec.containersType;
+      local resourceRequirements = container.mixin.resourcesType;
+      local selector = statefulSet.mixin.spec.selectorType;
+
+      local resources =
+        resourceRequirements.new() +
+        resourceRequirements.withRequests({ memory: '400Mi' });
+
+      {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'Prometheus',
+        metadata: {
+          name: $._config.prometheus.systemName,
+          namespace: $._config.namespace,
+          labels: {
+            prometheus: $._config.prometheus.systemName,
+          },
+        },
+        spec: {
+          replicas: $._config.prometheus.replicas,
+          retention: $._config.prometheus.retention,
+          scrapeInterval: $._config.prometheus.scrapeInterval,
+          query: $._config.prometheus.query,
+          storage: $._config.prometheus.storage,
+          version: $._config.versions.prometheus,
+          baseImage: $._config.imageRepos.prometheus,
+          serviceAccountName: 'prometheus-' + $._config.prometheus.name,
+          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['etcd', 'coredns', 'apiserver', 'prometheus', 'kube-scheduler', 'kube-controller-manager']}]},
           serviceMonitorNamespaceSelector: {},
           nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
@@ -238,7 +327,31 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           ],
         },
       },
-    /*
+    serviceMonitorSystem:
+      {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: {
+          name: 'prometheus-system',
+          namespace: $._config.namespace,
+          labels: {
+            'k8s-app': 'prometheus-system',
+          },
+        },
+        spec: {
+          selector: {
+            matchLabels: {
+              prometheus: $._config.prometheus.systemName,
+            },
+          },
+          endpoints: [
+            {
+              port: 'web',
+              interval: '1m',
+            },
+          ],
+        },
+      },
     serviceMonitorKubeScheduler:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -270,7 +383,6 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
-    */
     serviceMonitorKubelet:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -319,7 +431,6 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
-    /*
     serviceMonitorKubeControllerManager:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -358,7 +469,6 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
-    */
     serviceMonitorApiserver:
       {
         apiVersion: 'monitoring.coreos.com/v1',

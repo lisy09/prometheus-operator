@@ -93,7 +93,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         'etcd-client.crt': std.base64($._config.etcd.clientCert),
       }) +
       secret.mixin.metadata.withNamespace($._config.namespace),
-    prometheus+:
+    prometheusSystem+:
       {
         // Reference info: https://coreos.com/operators/prometheus/docs/latest/api.html#prometheusspec
         spec+: {
