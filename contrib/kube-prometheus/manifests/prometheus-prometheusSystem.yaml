@@ -2,8 +2,8 @@ apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
   labels:
-    prometheus: k8s
-  name: k8s
+    prometheus: k8s-system
+  name: k8s-system
   namespace: kubesphere-monitoring-system
 spec:
   alerting:
@@ -26,6 +26,8 @@ spec:
       prometheus: k8s
       role: alert-rules
   scrapeInterval: 1m
+  secrets:
+  - kube-etcd-client-certs
   securityContext:
     fsGroup: 0
     runAsNonRoot: false
@@ -37,10 +39,12 @@ spec:
     - key: k8s-app
       operator: In
       values:
-      - kube-state-metrics
-      - node-exporter
-      - kubelet
-      - prometheus-system
+      - etcd
+      - coredns
+      - apiserver
+      - prometheus
+      - kube-scheduler
+      - kube-controller-manager
   storage:
     volumeClaimTemplate:
       spec:
