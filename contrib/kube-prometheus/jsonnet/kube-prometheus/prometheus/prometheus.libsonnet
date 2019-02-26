@@ -9,7 +9,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     },
 
     imageRepos+:: {
-      prometheus: 'quay.io/prometheus/prometheus',
+      prometheus: 'dockerhub.qingcloud.com/prometheus/prometheus',
     },
 
     alertmanager+:: {

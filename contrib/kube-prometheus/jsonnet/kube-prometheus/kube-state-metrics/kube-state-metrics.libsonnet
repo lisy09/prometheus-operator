@@ -22,9 +22,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     },
 
     imageRepos+:: {
-      kubeStateMetrics: 'quay.io/coreos/kube-state-metrics',
-      kubeRbacProxy: 'quay.io/coreos/kube-rbac-proxy',
-      addonResizer: 'quay.io/coreos/addon-resizer',
+      kubeStateMetrics: 'dockerhub.qingcloud.com/coreos/kube-state-metrics',
+      kubeRbacProxy: 'dockerhub.qingcloud.com/coreos/kube-rbac-proxy',
+      addonResizer: 'dockerhub.qingcloud.com/coreos/addon-resizer',
     },
   },
 

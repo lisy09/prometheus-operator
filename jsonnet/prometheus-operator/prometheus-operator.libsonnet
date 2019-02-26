@@ -11,9 +11,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     },
 
     imageRepos+:: {
-      prometheusOperator: 'quay.io/coreos/prometheus-operator',
-      configmapReloader: 'quay.io/coreos/configmap-reload',
-      prometheusConfigReloader: 'quay.io/coreos/prometheus-config-reloader',
+      prometheusOperator: 'dockerhub.qingcloud.com/coreos/prometheus-operator',
+      configmapReloader: 'dockerhub.qingcloud.com/coreos/configmap-reload',
+      prometheusConfigReloader: 'dockerhub.qingcloud.com/coreos/prometheus-config-reloader',
     },
   },
 

@@ -5,13 +5,13 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      nodeExporter: 'v0.16.0',
+      nodeExporter: 'ks-v0.16.0',
       kubeRbacProxy: 'v0.4.0',
     },
 
     imageRepos+:: {
-      nodeExporter: 'quay.io/prometheus/node-exporter',
-      kubeRbacProxy: 'quay.io/coreos/kube-rbac-proxy',
+      nodeExporter: 'dockerhub.qingcloud.com/prometheus/node-exporter',
+      kubeRbacProxy: 'dockerhub.qingcloud.com/coreos/kube-rbac-proxy',
     },
   },
 
