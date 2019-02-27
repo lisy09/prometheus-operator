@@ -40,7 +40,7 @@ spec:
       - kube-state-metrics
       - node-exporter
       - kubelet
-      - prometheus-system
+      - prometheus
   storage:
     volumeClaimTemplate:
       spec:
