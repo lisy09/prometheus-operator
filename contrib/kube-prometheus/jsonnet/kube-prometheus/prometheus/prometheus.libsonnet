@@ -225,7 +225,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           version: $._config.versions.prometheus,
           baseImage: $._config.imageRepos.prometheus,
           serviceAccountName: 'prometheus-' + $._config.prometheus.name,
-          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['kube-state-metrics', 'node-exporter', 'kubelet', 'prometheus']}]},
+          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['kube-state-metrics', 'node-exporter', 'kubelet', 'prometheus-system']}]},
           serviceMonitorNamespaceSelector: {},
           nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
@@ -278,7 +278,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           version: $._config.versions.prometheus,
           baseImage: $._config.imageRepos.prometheus,
           serviceAccountName: 'prometheus-' + $._config.prometheus.name,
-          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['etcd', 'coredns', 'apiserver', 'prometheus-system', 'kube-scheduler', 'kube-controller-manager']}]},
+          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['etcd', 'coredns', 'apiserver', 'prometheus', 'kube-scheduler', 'kube-controller-manager', 'kube-state-metrics']}]},
           serviceMonitorNamespaceSelector: {},
           nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
