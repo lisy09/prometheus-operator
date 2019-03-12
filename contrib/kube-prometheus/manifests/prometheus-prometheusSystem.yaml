@@ -42,9 +42,10 @@ spec:
       - etcd
       - coredns
       - apiserver
-      - prometheus-system
+      - prometheus
       - kube-scheduler
       - kube-controller-manager
+      - kube-state-metrics
   storage:
     volumeClaimTemplate:
       spec:
