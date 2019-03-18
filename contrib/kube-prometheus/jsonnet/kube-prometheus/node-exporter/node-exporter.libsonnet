@@ -172,6 +172,13 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
               tlsConfig: {
                 insecureSkipVerify: true,
               },
+              metricRelabelings: [
+                {
+                  sourceLabels: ['__name__'],
+                  regex: 'node_ipvs_.*',
+                  action: 'drop',
+                },
+              ],
             },
           ],
         },

@@ -406,6 +406,14 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                 insecureSkipVerify: true,
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              metricRelabelings: [
+                // Drop unused metrics
+                {
+                  sourceLabels: ['__name__'],
+                  regex: 'reflector_.*|rest_client_.*|storage_operation_.*|apiserver_.*|http_.*|go_.*',
+                  action: 'drop',
+                },
+              ],
             },
             {
               port: 'https-metrics',
@@ -465,10 +473,11 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
               port: 'http-metrics',
               interval: '1m',
               metricRelabelings: [
+                // Only keep necessary metrics
                 {
                   sourceLabels: ['__name__'],
-                  regex: 'etcd_(debugging|disk|request|server).*',
-                  action: 'drop',
+                  regex: 'up',
+                  action: 'keep',
                 },
               ],
             },
