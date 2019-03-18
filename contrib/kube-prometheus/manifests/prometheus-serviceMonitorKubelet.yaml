@@ -10,6 +10,11 @@ spec:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
     interval: 1m
+    metricRelabelings:
+    - action: drop
+      regex: reflector_.*|rest_client_.*|storage_operation_.*|apiserver_.*|http_.*|go_.*
+      sourceLabels:
+      - __name__
     port: https-metrics
     scheme: https
     tlsConfig:

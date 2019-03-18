@@ -9,8 +9,8 @@ spec:
   endpoints:
   - interval: 1m
     metricRelabelings:
-    - action: drop
-      regex: etcd_(debugging|disk|request|server).*
+    - action: keep
+      regex: up
       sourceLabels:
       - __name__
     port: http-metrics

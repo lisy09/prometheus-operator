@@ -139,3 +139,210 @@ spec:
           )
         ) by (node)
       record: 'node:node_inodes_free:'
+  - name: etcd.rules
+    rules:
+    - expr: |
+        sum(up{job="etcd"} == 1)
+      record: etcd:up:sum
+    - expr: |
+        sum(changes(etcd_server_leader_changes_seen_total{job="etcd"}[1h]))
+      record: etcd:etcd_server_leader_changes_seen:sum_changes
+    - expr: |
+        sum(irate(etcd_server_proposals_failed_total{job="etcd"}[5m]))
+      record: etcd:etcd_server_proposals_failed:sum_irate
+    - expr: |
+        sum(irate(etcd_server_proposals_applied_total{job="etcd"}[5m]))
+      record: etcd:etcd_server_proposals_applied:sum_irate
+    - expr: |
+        sum(irate(etcd_server_proposals_committed_total{job="etcd"}[5m]))
+      record: etcd:etcd_server_proposals_committed:sum_irate
+    - expr: |
+        sum(etcd_server_proposals_pending{job="etcd"})
+      record: etcd:etcd_server_proposals_pending:sum
+    - expr: |
+        sum(label_replace(etcd_debugging_mvcc_db_total_size_in_bytes{job="etcd"},"node", "$1", "instance", "(.*):.*")) by (node)
+      record: etcd:etcd_debugging_mvcc_db_total_size:sum
+    - expr: |
+        sum(label_replace(etcd_mvcc_db_total_size_in_bytes{job="etcd"},"node", "$1", "instance", "(.*):.*")) by (node)
+      record: etcd:etcd_mvcc_db_total_size:sum
+    - expr: |
+        sum(irate(etcd_network_client_grpc_received_bytes_total{job="etcd"}[5m]))
+      record: etcd:etcd_network_client_grpc_received_bytes:sum_irate
+    - expr: |
+        sum(irate(etcd_network_client_grpc_sent_bytes_total{job="etcd"}[5m]))
+      record: etcd:etcd_network_client_grpc_sent_bytes:sum_irate
+    - expr: |
+        sum(irate(grpc_server_started_total{job="etcd",grpc_type="unary"}[5m]))
+      record: etcd:grpc_server_started:sum_irate
+    - expr: |
+        sum(irate(grpc_server_handled_total{job="etcd",grpc_type="unary",grpc_code!="OK"}[5m]))
+      record: etcd:grpc_server_handled:sum_irate
+    - expr: |
+        sum(irate(grpc_server_msg_received_total{job="etcd"}[5m]))
+      record: etcd:grpc_server_msg_received:sum_irate
+    - expr: |
+        sum(irate(grpc_server_msg_sent_total{job="etcd"}[5m]))
+      record: etcd:grpc_server_msg_sent:sum_irate
+    - expr: |
+        sum(label_replace(sum(irate(etcd_disk_wal_fsync_duration_seconds_sum{job="etcd"}[5m])) by (instance) / sum(irate(etcd_disk_wal_fsync_duration_seconds_count{job="etcd"}[5m])) by (instance), "node", "$1", "instance", "(.*):.*")) by (node)
+      record: etcd:etcd_disk_wal_fsync_duration:avg
+    - expr: |
+        sum(label_replace(sum(irate(etcd_disk_backend_commit_duration_seconds_sum{job="etcd"}[5m])) by (instance) / sum(irate(etcd_disk_backend_commit_duration_seconds_count{job="etcd"}[5m])) by (instance), "node", "$1", "instance", "(.*):.*")) by (node)
+      record: etcd:etcd_disk_backend_commit_duration:avg
+  - name: etcd_histogram.rules
+    rules:
+    - expr: |
+        histogram_quantile(0.99, sum(label_replace(sum(irate(etcd_disk_wal_fsync_duration_seconds_bucket{job="etcd"}[5m])) by (instance, le), "node", "$1", "instance", "(.*):.*")) by (node, le))
+      labels:
+        quantile: "0.99"
+      record: etcd:etcd_disk_wal_fsync_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.9, sum(label_replace(sum(irate(etcd_disk_wal_fsync_duration_seconds_bucket{job="etcd"}[5m])) by (instance, le), "node", "$1", "instance", "(.*):.*")) by (node, le))
+      labels:
+        quantile: "0.9"
+      record: etcd:etcd_disk_wal_fsync_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.5, sum(label_replace(sum(irate(etcd_disk_wal_fsync_duration_seconds_bucket{job="etcd"}[5m])) by (instance, le), "node", "$1", "instance", "(.*):.*")) by (node, le))
+      labels:
+        quantile: "0.5"
+      record: etcd:etcd_disk_wal_fsync_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.99, sum(label_replace(sum(irate(etcd_disk_backend_commit_duration_seconds_bucket{job="etcd"}[5m])) by (instance, le), "node", "$1", "instance", "(.*):.*")) by (node, le))
+      labels:
+        quantile: "0.99"
+      record: etcd:etcd_disk_backend_commit_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.9, sum(label_replace(sum(irate(etcd_disk_backend_commit_duration_seconds_bucket{job="etcd"}[5m])) by (instance, le), "node", "$1", "instance", "(.*):.*")) by (node, le))
+      labels:
+        quantile: "0.9"
+      record: etcd:etcd_disk_backend_commit_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.5, sum(label_replace(sum(irate(etcd_disk_backend_commit_duration_seconds_bucket{job="etcd"}[5m])) by (instance, le), "node", "$1", "instance", "(.*):.*")) by (node, le))
+      labels:
+        quantile: "0.5"
+      record: etcd:etcd_disk_backend_commit_duration:histogram_quantile
+  - name: apiserver.rules
+    rules:
+    - expr: |
+        sum(up{job="apiserver"} == 1)
+      record: apiserver:up:sum
+    - expr: |
+        sum(irate(apiserver_request_count{job="apiserver"}[5m]))
+      record: apiserver:apiserver_request_count:sum_irate
+    - expr: |
+        sum(irate(apiserver_request_count{job="apiserver"}[5m])) by (verb)
+      record: apiserver:apiserver_request_count:sum_verb_irate
+    - expr: |
+        sum(irate(apiserver_request_latencies_sum{job="apiserver", verb!~"WATCH|CONNECT"}[5m])) / sum(irate(apiserver_request_latencies_count{job="apiserver", verb!~"WATCH|CONNECT"}[5m]))/ 1e+06
+      record: apiserver:apiserver_request_latencies:avg
+    - expr: |
+        sum(irate(apiserver_request_latencies_sum{job="apiserver", verb!~"WATCH|CONNECT"}[5m])) by (verb) / sum(irate(apiserver_request_latencies_count{job="apiserver", verb!~"WATCH|CONNECT"}[5m])) by (verb) / 1e+06
+      record: apiserver:apiserver_request_latencies:avg_by_verb
+  - name: scheduler.rules
+    rules:
+    - expr: |
+        sum(up{job="kube-scheduler"} == 1)
+      record: scheduler:up:sum
+    - expr: |
+        sum(scheduler_schedule_attempts_total{job="kube-scheduler"}) by (result)
+      record: scheduler:scheduler_schedule_attempts:sum
+    - expr: |
+        sum(rate(scheduler_schedule_attempts_total{job="kube-scheduler"}[5m])) by (result)
+      record: scheduler:scheduler_schedule_attempts:sum_rate
+    - expr: |
+        (sum(rate(scheduler_e2e_scheduling_latency_microseconds_sum{job="kube-scheduler"}[1h]))  / sum(rate(scheduler_e2e_scheduling_latency_microseconds_count{job="kube-scheduler"}[1h]))) /  1e+06
+      record: scheduler:scheduler_e2e_scheduling_latency:avg
+  - name: scheduler_histogram.rules
+    rules:
+    - expr: |
+        histogram_quantile(0.99, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job="kube-scheduler"}[1h])) by (le) ) / 1e+06
+      labels:
+        quantile: "0.99"
+      record: scheduler:scheduler_e2e_scheduling_latency:histogram_quantile
+    - expr: |
+        histogram_quantile(0.9, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job="kube-scheduler"}[1h])) by (le) ) / 1e+06
+      labels:
+        quantile: "0.9"
+      record: scheduler:scheduler_e2e_scheduling_latency:histogram_quantile
+    - expr: |
+        histogram_quantile(0.5, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job="kube-scheduler"}[1h])) by (le) ) / 1e+06
+      labels:
+        quantile: "0.5"
+      record: scheduler:scheduler_e2e_scheduling_latency:histogram_quantile
+  - name: controller_manager.rules
+    rules:
+    - expr: |
+        sum(up{job="kube-controller-manager"} == 1)
+      record: controller_manager:up:sum
+  - name: coredns.rules
+    rules:
+    - expr: |
+        sum(up{job="coredns"} == 1)
+      record: coredns:up:sum
+    - expr: |
+        sum(irate(coredns_cache_hits_total[5m]))
+      record: coredns:coredns_cache_hits_total:sum_irate
+    - expr: |
+        sum(irate(coredns_cache_misses[5m]))
+      record: coredns:coredns_cache_misses:sum_irate
+    - expr: |
+        sum(irate(coredns_dns_request_count_total{job="coredns"}[5m]))
+      record: coredns:coredns_dns_request_count:sum_irate
+    - expr: |
+        sum(irate(coredns_dns_request_type_count_total[5m])) by (type)
+      record: coredns:coredns_dns_request_type_count:sum_irate
+    - expr: |
+        sum(irate(coredns_dns_response_rcode_count_total[5m])) by (rcode)
+      record: coredns:coredns_dns_response_rcode_count:sum_irate
+    - expr: |
+        sum(irate(coredns_panic_count_total[5m]))
+      record: coredns:coredns_panic_count:sum_irate
+    - expr: |
+        sum(irate(coredns_proxy_request_count_total{job="coredns"}[5m]))
+      record: coredns:coredns_proxy_request_count:sum_irate
+    - expr: |
+        sum(irate(coredns_dns_request_duration_seconds_sum{job="coredns"}[5m])) / sum(irate(coredns_dns_request_duration_seconds_count{job="coredns"}[5m]))
+      record: coredns:coredns_dns_request_duration:avg
+    - expr: |
+        sum(irate(coredns_proxy_request_duration_seconds_sum{job="coredns"}[5m])) / sum(irate(coredns_proxy_request_duration_seconds_count{job="coredns"}[5m]))
+      record: coredns:coredns_proxy_request_duration:avg
+  - name: coredns_histogram.rules
+    rules:
+    - expr: |
+        histogram_quantile(0.99, sum(irate(coredns_dns_request_duration_seconds_bucket{job="coredns"}[5m])) by (le))
+      labels:
+        quantile: "0.99"
+      record: coredns:coredns_dns_request_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.9, sum(irate(coredns_dns_request_duration_seconds_bucket{job="coredns"}[5m])) by (le))
+      labels:
+        quantile: "0.9"
+      record: coredns:coredns_dns_request_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.5, sum(irate(coredns_dns_request_duration_seconds_bucket{job="coredns"}[5m])) by (le))
+      labels:
+        quantile: "0.5"
+      record: coredns:coredns_dns_request_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.99, sum(irate(coredns_proxy_request_duration_seconds_bucket{job="coredns"}[5m])) by (le))
+      labels:
+        quantile: "0.99"
+      record: coredns:coredns_proxy_request_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.9, sum(irate(coredns_proxy_request_duration_seconds_bucket{job="coredns"}[5m])) by (le))
+      labels:
+        quantile: "0.9"
+      record: coredns:coredns_proxy_request_duration:histogram_quantile
+    - expr: |
+        histogram_quantile(0.5, sum(irate(coredns_proxy_request_duration_seconds_bucket{job="coredns"}[5m])) by (le))
+      labels:
+        quantile: "0.5"
+      record: coredns:coredns_proxy_request_duration:histogram_quantile
+  - name: prometheus.rules
+    rules:
+    - expr: |
+        sum(up{job="prometheus-k8s"} == 1)
+      record: prometheus:up:sum
+    - expr: |
+        sum(rate(prometheus_tsdb_head_samples_appended_total{job="prometheus-k8s"} [5m])) by (job)
+      record: prometheus:prometheus_tsdb_head_samples_appended:sum_rate
