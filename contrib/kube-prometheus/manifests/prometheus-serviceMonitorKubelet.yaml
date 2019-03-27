@@ -28,8 +28,8 @@ spec:
       sourceLabels:
       - __name__
       - image
-    - action: drop
-      regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
+    - action: keep
+      regex: container_cpu_usage_seconds_total|container_memory_usage_bytes|container_memory_cache|container_network_.+_bytes_total|container_memory_working_set_bytes
       sourceLabels:
       - __name__
     path: /metrics/cadvisor
