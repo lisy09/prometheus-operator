@@ -278,7 +278,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           version: $._config.versions.prometheus,
           baseImage: $._config.imageRepos.prometheus,
           serviceAccountName: 'prometheus-' + $._config.prometheus.name,
-          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['etcd', 'coredns', 'apiserver', 'prometheus', 'kube-scheduler', 'kube-controller-manager', 'kube-state-metrics']}]},
+          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['etcd', 'coredns', 'apiserver', 'prometheus', 'kube-scheduler', 'kube-controller-manager']}]},
           serviceMonitorNamespaceSelector: {},
           nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
@@ -437,8 +437,8 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                 // https://github.com/google/cadvisor/issues/1925.
                 {
                   sourceLabels: ['__name__'],
-                  regex: 'container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
-                  action: 'drop',
+                  regex: 'container_cpu_usage_seconds_total|container_memory_usage_bytes|container_memory_cache|container_network_.+_bytes_total|container_memory_working_set_bytes',
+                  action: 'keep',
                 },
               ],
             },

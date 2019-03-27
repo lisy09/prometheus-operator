@@ -175,8 +175,8 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
               metricRelabelings: [
                 {
                   sourceLabels: ['__name__'],
-                  regex: 'node_ipvs_.*',
-                  action: 'drop',
+                  regex: 'node_cpu_.+|node_memory_MemFree_bytes|node_memory_Cached_bytes|node_memory_Buffers_bytes|node_network_.+_bytes_total|node_disk_.+_completed_total|node_disk_.+_bytes_total|node_filesystem_files|node_filesystem_files_free|node_filesystem_avail_bytes|node_filesystem_size_bytes|node_filesystem_free_bytes|node_load.+',
+                  action: 'keep',
                 },
               ],
             },

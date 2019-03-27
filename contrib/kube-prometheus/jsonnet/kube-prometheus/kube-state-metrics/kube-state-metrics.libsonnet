@@ -295,6 +295,14 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
               tlsConfig: {
                 insecureSkipVerify: true,
               },
+              metricRelabelings: [
+                // Drop unused metrics
+                {
+                  sourceLabels: ['__name__'],
+                  regex: 'kube_pod_container_status_.+_reason',
+                  action: 'drop',
+                },
+              ],
             },
             {
               port: 'https-self',
