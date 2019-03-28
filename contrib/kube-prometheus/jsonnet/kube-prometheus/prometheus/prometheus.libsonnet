@@ -22,7 +22,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       replicas: 1,
       rules: {},
       renderedRules: {},
-      namespaces: ['default', 'kube-system', $._config.namespace],
+      namespaces: ['default', 'kube-system', 'istio-system', $._config.namespace],
       retention: '7d',
       scrapeInterval: '1m',
       query: {
@@ -300,6 +300,10 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             runAsNonRoot: false,
             fsGroup: 0,
           },
+        },
+        additionalScrapeConfigs: {
+          name: 'additional-scrape-configs',
+          key: 'prometheus-additional.yaml',
         },
       },
     serviceMonitor:
