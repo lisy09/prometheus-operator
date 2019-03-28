@@ -1,3 +1,6 @@
+additionalScrapeConfigs:
+  key: prometheus-additional.yaml
+  name: additional-scrape-configs
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
