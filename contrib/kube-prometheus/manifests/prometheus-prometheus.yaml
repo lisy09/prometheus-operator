@@ -6,11 +6,6 @@ metadata:
   name: k8s
   namespace: kubesphere-monitoring-system
 spec:
-  alerting:
-    alertmanagers:
-    - name: alertmanager-main
-      namespace: kubesphere-monitoring-system
-      port: web
   baseImage: dockerhub.qingcloud.com/prometheus/prometheus
   nodeSelector:
     beta.kubernetes.io/os: linux

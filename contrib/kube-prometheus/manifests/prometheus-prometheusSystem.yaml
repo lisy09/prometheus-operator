@@ -1,6 +1,3 @@
-additionalScrapeConfigs:
-  key: prometheus-additional.yaml
-  name: additional-scrape-configs
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
@@ -9,11 +6,9 @@ metadata:
   name: k8s-system
   namespace: kubesphere-monitoring-system
 spec:
-  alerting:
-    alertmanagers:
-    - name: alertmanager-main
-      namespace: kubesphere-monitoring-system
-      port: web
+  additionalScrapeConfigs:
+    key: prometheus-additional.yaml
+    name: additional-scrape-configs
   baseImage: dockerhub.qingcloud.com/prometheus/prometheus
   nodeSelector:
     beta.kubernetes.io/os: linux
