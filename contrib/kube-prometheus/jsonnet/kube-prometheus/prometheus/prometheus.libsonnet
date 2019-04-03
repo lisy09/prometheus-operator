@@ -233,15 +233,6 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             prometheus: $._config.prometheus.name,
           }),
           resources: resources,
-          alerting: {
-            alertmanagers: [
-              {
-                namespace: $._config.namespace,
-                name: 'alertmanager-' + $._config.alertmanager.name,
-                port: 'web',
-              },
-            ],
-          },
           securityContext: {
             runAsUser: 0,
             runAsNonRoot: false,
@@ -286,24 +277,15 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             prometheus: $._config.prometheus.name,
           }),
           resources: resources,
-          alerting: {
-            alertmanagers: [
-              {
-                namespace: $._config.namespace,
-                name: 'alertmanager-' + $._config.alertmanager.name,
-                port: 'web',
-              },
-            ],
-          },
           securityContext: {
             runAsUser: 0,
             runAsNonRoot: false,
             fsGroup: 0,
           },
-        },
-        additionalScrapeConfigs: {
-          name: 'additional-scrape-configs',
-          key: 'prometheus-additional.yaml',
+          additionalScrapeConfigs: {
+            name: 'additional-scrape-configs',
+            key: 'prometheus-additional.yaml',
+          },
         },
       },
     serviceMonitor:
