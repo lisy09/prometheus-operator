@@ -161,7 +161,7 @@ spec:
         count(kube_pod_info unless on (pod) (kube_pod_status_phase{job="kube-state-metrics", phase=~"Failed|Pending|Unknown|Running"} > 0))  by (node) unless on (node) (kube_node_status_condition{job="kube-state-metrics", condition="Ready",status=~"unknown|false"} > 0)
       record: node:pod_succeeded:count
     - expr: |
-        count(kube_pod_info unless on (pod) (kube_pod_status_phase{job="kube-state-metrics", phase=~"Succeeded|Running"} > 0)) by (node) unless on (node) (kube_node_status_condition{job="kube-state-metrics", condition="Ready", status=~"unknown|false"} > 0)
+        sum (kube_pod_info * on(pod) group_right(node) kube_pod_status_phase{job="kube-state-metrics",phase!~"Succeeded|Running"}) by (node) unless on (node) (kube_node_status_condition{job="kube-state-metrics", condition="Ready", status=~"unknown|false"} > 0)
       record: node:pod_abnormal:count
     - expr: |
         node:pod_abnormal:count / node:pod_count:sum
@@ -435,8 +435,8 @@ spec:
   - name: prometheus.rules
     rules:
     - expr: |
-        sum(up{job=~"prometheus-k8s.*"} == 1)
+        sum(up{job="prometheus-k8s"} == 1)
       record: prometheus:up:sum
     - expr: |
-        sum(rate(prometheus_tsdb_head_samples_appended_total{job=~"prometheus-k8s.*"} [5m])) by (job)
+        sum(rate(prometheus_tsdb_head_samples_appended_total{job="prometheus-k8s"} [5m])) by (job)
       record: prometheus:prometheus_tsdb_head_samples_appended:sum_rate
