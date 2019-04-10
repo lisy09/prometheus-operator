@@ -84,6 +84,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         },
       },
+    /*
     secretEtcdCerts:
       // Prometheus Operator allows us to mount secrets in the pod. By loading the secrets as files, they can be made available inside the Prometheus pod.
       local secret = k.core.v1.secret;
@@ -93,11 +94,12 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         'etcd-client.crt': std.base64($._config.etcd.clientCert),
       }) +
       secret.mixin.metadata.withNamespace($._config.namespace),
+    */
     prometheusSystem+:
       {
         // Reference info: https://coreos.com/operators/prometheus/docs/latest/api.html#prometheusspec
         spec+: {
-          secrets+: [$.prometheus.secretEtcdCerts.metadata.name],
+          secrets+: ['kube-etcd-client-certs'],
         },
       },
   },
