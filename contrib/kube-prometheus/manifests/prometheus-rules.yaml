@@ -239,7 +239,7 @@ spec:
         sum(up{job="etcd"} == 1)
       record: etcd:up:sum
     - expr: |
-        sum(changes(etcd_server_leader_changes_seen_total{job="etcd"}[1h]))
+        sum(label_replace(sum(changes(etcd_server_leader_changes_seen_total{job="etcd"}[1h])) by (instance), "node", "$1", "instance", "(.*):.*")) by (node)
       record: etcd:etcd_server_leader_changes_seen:sum_changes
     - expr: |
         sum(label_replace(sum(irate(etcd_server_proposals_failed_total{job="etcd"}[5m])) by (instance), "node", "$1", "instance", "(.*):.*")) by (node)
