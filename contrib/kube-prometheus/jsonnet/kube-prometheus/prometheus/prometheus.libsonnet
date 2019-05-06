@@ -26,7 +26,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       retention: '7d',
       scrapeInterval: '1m',
       query: {
-        maxConcurrency: 200 
+        maxConcurrency: 1000
       },
       storage: {
         volumeClaimTemplate: {
