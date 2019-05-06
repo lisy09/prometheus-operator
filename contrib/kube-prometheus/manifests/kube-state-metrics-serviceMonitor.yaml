@@ -10,6 +10,11 @@ spec:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
     interval: 1m
+    metricRelabelings:
+    - action: drop
+      regex: kube_pod_container_status_.*terminated_reason
+      sourceLabels:
+      - __name__
     port: https-main
     scheme: https
     scrapeTimeout: 30s

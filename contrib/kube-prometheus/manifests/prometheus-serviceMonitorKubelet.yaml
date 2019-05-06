@@ -11,8 +11,8 @@ spec:
     honorLabels: true
     interval: 1m
     metricRelabelings:
-    - action: drop
-      regex: reflector_.*|rest_client_.*|storage_operation_.*|apiserver_.*|http_.*|go_.*
+    - action: keep
+      regex: kubelet_running_container_count|kubelet_running_pod_count|kubelet_containers_per_pod_count.*
       sourceLabels:
       - __name__
     port: https-metrics
