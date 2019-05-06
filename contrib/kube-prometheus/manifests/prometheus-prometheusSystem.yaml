@@ -13,7 +13,7 @@ spec:
   nodeSelector:
     beta.kubernetes.io/os: linux
   query:
-    maxConcurrency: 200
+    maxConcurrency: 1000
   replicas: 1
   resources:
     requests:
