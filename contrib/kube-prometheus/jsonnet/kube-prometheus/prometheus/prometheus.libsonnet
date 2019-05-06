@@ -396,8 +396,8 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                 // Drop unused metrics
                 {
                   sourceLabels: ['__name__'],
-                  regex: 'reflector_.*|rest_client_.*|storage_operation_.*|apiserver_.*|http_.*|go_.*',
-                  action: 'drop',
+                  regex: 'kubelet_running_container_count|kubelet_running_pod_count|kubelet_containers_per_pod_count.*',
+                  action: 'keep',
                 },
               ],
             },
