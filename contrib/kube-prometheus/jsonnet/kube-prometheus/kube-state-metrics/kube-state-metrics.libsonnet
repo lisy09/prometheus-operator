@@ -16,9 +16,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     },
 
     versions+:: {
-      kubeStateMetrics: 'v1.5.1',
-      kubeRbacProxy: 'v0.4.0',
-      addonResizer: '1.0',
+      kubeStateMetrics: 'v1.5.2',
+      kubeRbacProxy: 'v0.4.1',
+      addonResizer: '1.8.4',
     },
 
     imageRepos+:: {
@@ -136,21 +136,21 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         container.new('kube-rbac-proxy-main', $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy) +
         container.withArgs([
           '--secure-listen-address=:8443',
+          '--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256',
           '--upstream=http://127.0.0.1:8081/',
         ]) +
         container.withPorts(containerPort.newNamed('https-main', 8443)) +
-        container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '20m', memory: '40Mi' });
+        container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }); 
 
       local proxySelfMetrics =
         container.new('kube-rbac-proxy-self', $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy) +
         container.withArgs([
           '--secure-listen-address=:9443',
+          '--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256',
           '--upstream=http://127.0.0.1:8082/',
         ]) +
         container.withPorts(containerPort.newNamed('https-self', 9443)) +
-        container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '20m', memory: '40Mi' });
+        container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }); 
 
       local kubeStateMetrics =
         container.new('kube-state-metrics', $._config.imageRepos.kubeStateMetrics + ':' + $._config.versions.kubeStateMetrics) +
@@ -160,8 +160,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           '--telemetry-host=127.0.0.1',
           '--telemetry-port=8082',
         ] + if $._config.kubeStateMetrics.collectors != '' then ['--collectors=' + $._config.kubeStateMetrics.collectors] else []) +
-        container.mixin.resources.withRequests({ cpu: $._config.kubeStateMetrics.baseCPU, memory: $._config.kubeStateMetrics.baseMemory }) +
-        container.mixin.resources.withLimits({ cpu: $._config.kubeStateMetrics.baseCPU, memory: $._config.kubeStateMetrics.baseMemory });
+        container.mixin.resources.withRequests({ cpu: $._config.kubeStateMetrics.baseCPU, memory: $._config.kubeStateMetrics.baseMemory }); 
 
       local addonResizer =
         container.new('addon-resizer', $._config.imageRepos.addonResizer + ':' + $._config.versions.addonResizer) +
@@ -189,8 +188,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             },
           },
         ]) +
-        container.mixin.resources.withRequests({ cpu: '10m', memory: '30Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '50m', memory: '30Mi' });
+        container.mixin.resources.withRequests({ cpu: '10m', memory: '30Mi' }); 
 
       local c = [proxyClusterMetrics, proxySelfMetrics, kubeStateMetrics, addonResizer];
 
