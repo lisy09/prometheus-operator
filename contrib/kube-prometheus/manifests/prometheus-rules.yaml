@@ -444,5 +444,5 @@ spec:
         sum(up{job=~"prometheus-k8s.*"} == 1)
       record: prometheus:up:sum
     - expr: |
-        sum(rate(prometheus_tsdb_head_samples_appended_total{job=~"prometheus-k8s.*"} [5m])) by (job)
+        sum(rate(prometheus_tsdb_head_samples_appended_total{job=~"prometheus-k8s.*"} [5m])) by (job, pod)
       record: prometheus:prometheus_tsdb_head_samples_appended:sum_rate
