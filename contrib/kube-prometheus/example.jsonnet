@@ -1,4 +1,5 @@
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+           (import 'kube-prometheus/kube-prometheus-tolerations.libsonnet') +
            (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + {
   _config+:: {
     namespace: 'kubesphere-monitoring-system',
