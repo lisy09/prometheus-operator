@@ -49,4 +49,9 @@ spec:
         resources:
           requests:
             storage: 20Gi
+  tolerations:
+  - effect: NoSchedule
+    key: dedicated
+    operator: Equal
+    value: monitoring
   version: v2.5.0
