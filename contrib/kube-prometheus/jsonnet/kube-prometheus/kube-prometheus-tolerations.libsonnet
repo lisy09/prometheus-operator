@@ -16,11 +16,11 @@ local toleration = statefulSet.mixin.spec.template.spec.tolerationsType;
 
   local withTolerations() = {
     tolerations: [
-      toleration.new() +
-      toleration.withKey(t.key) +
-      toleration.withOperator(t.operator) + 
-      toleration.withValue(t.value) +
-      toleration.withEffect(t.effect),
+      toleration.new() + (
+      if std.objectHas(t, 'key') then toleration.withKey(t.key) else toleration) + (
+      if std.objectHas(t, 'operator') then toleration.withOperator(t.operator) else toleration) + (
+      if std.objectHas(t, 'value') then toleration.withValue(t.value) else toleration) + (
+      if std.objectHas(t, 'effect') then toleration.withEffect(t.effect) else toleration),
       for t in $._config.tolerations
     ],
   },
