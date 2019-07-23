@@ -8,7 +8,7 @@
                     "subdir": "contrib/kube-prometheus/jsonnet/kube-prometheus"
                 }
             },
-            "version": "ae243095b4930a8e9c2e6d8fcbe7f65ec88a0cdd"
+            "version": "ceab2f2970488bd13289a12921113d612e734833"
         },
         {
             "name": "ksonnet",
@@ -68,7 +68,7 @@
                     "subdir": "jsonnet/prometheus-operator"
                 }
             },
-            "version": "b7589150bc39bea1c0555d814e0429b2be5ead1a"
+            "version": "ceab2f2970488bd13289a12921113d612e734833"
         },
         {
             "name": "etcd-mixin",
