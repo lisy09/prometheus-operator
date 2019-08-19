@@ -6,6 +6,9 @@ metadata:
   name: k8s-system
   namespace: kubesphere-monitoring-system
 spec:
+  additionalScrapeConfigs:
+    key: prometheus-additional.yaml
+    name: additional-scrape-configs
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -20,9 +23,6 @@ spec:
           - kubesphere-monitoring-system
           topologyKey: kubernetes.io/hostname
         weight: 100
-  additionalScrapeConfigs:
-    key: prometheus-additional.yaml
-    name: additional-scrape-configs
   baseImage: dockerhub.qingcloud.com/prometheus/prometheus
   nodeSelector:
     beta.kubernetes.io/os: linux
