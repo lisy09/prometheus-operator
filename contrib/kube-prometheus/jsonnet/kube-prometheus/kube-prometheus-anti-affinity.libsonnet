@@ -35,5 +35,9 @@ local matchExpression = affinity.mixin.podAffinityTerm.labelSelector.matchExpres
       spec+:
         antiaffinity('prometheus', [$._config.prometheus.name]),
     },
+    prometheusSystem+: {
+      spec+:
+        antiaffinity('prometheus', [$._config.prometheus.systemName]),
+    },
   },
 }
