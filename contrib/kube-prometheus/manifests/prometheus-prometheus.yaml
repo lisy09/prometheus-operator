@@ -50,6 +50,7 @@ spec:
       - node-exporter
       - kubelet
       - prometheus-system
+      - s2i-operator
   storage:
     volumeClaimTemplate:
       spec:
