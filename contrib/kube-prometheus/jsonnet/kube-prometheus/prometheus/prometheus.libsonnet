@@ -22,7 +22,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       replicas: 1,
       rules: {},
       renderedRules: {},
-      namespaces: ['default', 'kube-system', 'istio-system', $._config.namespace],
+      namespaces: ['default', 'kube-system', 'kubesphere-devops-system', 'istio-system', $._config.namespace],
       retention: '7d',
       scrapeInterval: '1m',
       query: {
@@ -225,7 +225,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           version: $._config.versions.prometheus,
           baseImage: $._config.imageRepos.prometheus,
           serviceAccountName: 'prometheus-' + $._config.prometheus.name,
-          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['kube-state-metrics', 'node-exporter', 'kubelet', 'prometheus-system']}]},
+          serviceMonitorSelector: {matchExpressions: [{key: 'k8s-app', operator: 'In', values: ['kube-state-metrics', 'node-exporter', 'kubelet', 'prometheus-system', 's2i-operator']}]},
           serviceMonitorNamespaceSelector: {},
           nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
@@ -563,6 +563,46 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
               port: 'metrics',
               interval: '1m',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+            },
+          ],
+        },
+      },
+    serviceMonitorS2IOperator:
+      {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: {
+          name: 's2i-operator',
+          namespace: $._config.namespace,
+          labels: {
+            'k8s-app': 's2i-operator',
+          },
+        },
+        spec: {
+          jobLabel: 'k8s-app',
+          selector: {
+            matchLabels: {
+              'control-plane': 's2i-controller-manager',
+              'app': 's2i-metrics',
+            },
+          },
+          namespaceSelector: {
+            matchNames: [
+              'kubesphere-devops-system',
+            ],
+          },
+          endpoints: [
+            {
+              port: 'http',
+              interval: '1m',
+              honorLabels: true,
+              metricRelabelings: [
+                {
+                  sourceLabels: ['__name__'],
+                  regex: 's2i_s2ibuilder_created',
+                  action: 'keep',
+                },
+              ],
             },
           ],
         },
