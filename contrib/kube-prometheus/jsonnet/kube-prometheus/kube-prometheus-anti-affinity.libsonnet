@@ -5,7 +5,7 @@ local matchExpression = affinity.mixin.podAffinityTerm.labelSelector.matchExpres
 
 {
   local antiaffinity(key, values) = {
-    affinity: {
+    affinity+: {
       podAntiAffinity: {
         preferredDuringSchedulingIgnoredDuringExecution: [
           affinity.new() +

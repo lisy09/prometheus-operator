@@ -1,7 +1,8 @@
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
            (import 'kube-prometheus/kube-prometheus-tolerations.libsonnet') +
            (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + 
-           (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') + {
+           (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') + 
+           (import 'kube-prometheus/kube-prometheus-node-affinity.libsonnet') + {
   _config+:: {
     namespace: 'kubesphere-monitoring-system',
     etcd+:: {
