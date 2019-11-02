@@ -14,7 +14,7 @@ spec:
       preferredDuringSchedulingIgnoredDuringExecution:
       - preference:
           matchExpressions:
-          - key: kubesphere/role
+          - key: node-role.kubernetes.io/monitoring
             operator: In
             values:
             - monitoring
