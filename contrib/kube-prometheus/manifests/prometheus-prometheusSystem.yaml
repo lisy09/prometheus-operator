@@ -10,6 +10,15 @@ spec:
     key: prometheus-additional.yaml
     name: additional-scrape-configs
   affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - preference:
+          matchExpressions:
+          - key: kubesphere/role
+            operator: In
+            values:
+            - monitoring
+        weight: 100
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
       - podAffinityTerm:
