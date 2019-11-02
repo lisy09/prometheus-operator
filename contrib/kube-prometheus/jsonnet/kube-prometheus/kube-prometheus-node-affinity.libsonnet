@@ -4,7 +4,7 @@ local nodeAffinity = statefulSet.mixin.spec.template.spec.affinity.nodeAffinity.
 local matchExpression = nodeAffinity.mixin.preference.matchExpressionsType;
 
 {
-  local affinity(key, values) = {
+  local affinity(key) = {
     affinity+: {
       nodeAffinity: {
         preferredDuringSchedulingIgnoredDuringExecution: [
@@ -13,8 +13,7 @@ local matchExpression = nodeAffinity.mixin.preference.matchExpressionsType;
           nodeAffinity.mixin.preference.withMatchExpressions([
             matchExpression.new() +
             matchExpression.withKey(key) +
-            matchExpression.withOperator('In') +
-            matchExpression.withValues(values),
+            matchExpression.withOperator('Exists'), 
           ]),
         ],
       },
@@ -24,11 +23,11 @@ local matchExpression = nodeAffinity.mixin.preference.matchExpressionsType;
   prometheus+: {
     prometheus+: {
       spec+:
-        affinity('node-role.kubernetes.io/monitoring', ['monitoring']),
+        affinity('node-role.kubernetes.io/monitoring'),
     },
     prometheusSystem+: {
       spec+:
-      affinity('node-role.kubernetes.io/monitoring', ['monitoring']),
+      affinity('node-role.kubernetes.io/monitoring'),
     },
   },
 }
