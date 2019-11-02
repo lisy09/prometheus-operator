@@ -15,9 +15,7 @@ spec:
       - preference:
           matchExpressions:
           - key: node-role.kubernetes.io/monitoring
-            operator: In
-            values:
-            - monitoring
+            operator: Exists
         weight: 100
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
