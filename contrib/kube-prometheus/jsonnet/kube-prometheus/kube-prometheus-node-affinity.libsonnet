@@ -24,11 +24,11 @@ local matchExpression = nodeAffinity.mixin.preference.matchExpressionsType;
   prometheus+: {
     prometheus+: {
       spec+:
-        affinity('kubesphere/role', ['monitoring']),
+        affinity('node-role.kubernetes.io/monitoring', ['monitoring']),
     },
     prometheusSystem+: {
       spec+:
-      affinity('kubesphere/role', ['monitoring']),
+      affinity('node-role.kubernetes.io/monitoring', ['monitoring']),
     },
   },
 }
