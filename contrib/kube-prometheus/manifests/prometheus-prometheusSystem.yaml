@@ -30,7 +30,7 @@ spec:
           - kubesphere-monitoring-system
           topologyKey: kubernetes.io/hostname
         weight: 100
-  baseImage: dockerhub.qingcloud.com/prometheus/prometheus
+  baseImage: kubesphere/prometheus
   nodeSelector:
     beta.kubernetes.io/os: linux
   query:
