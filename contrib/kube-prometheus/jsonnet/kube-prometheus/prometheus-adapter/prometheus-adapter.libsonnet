@@ -9,7 +9,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     },
 
     imageRepos+:: {
-      prometheusAdapter: 'dockerhub.qingcloud.com/coreos/k8s-prometheus-adapter-amd64',
+      prometheusAdapter: 'kubesphere/k8s-prometheus-adapter-amd64',
     },
 
     prometheusAdapter+:: {

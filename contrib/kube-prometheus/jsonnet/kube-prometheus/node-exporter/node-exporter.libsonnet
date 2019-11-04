@@ -10,8 +10,8 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     },
 
     imageRepos+:: {
-      nodeExporter: 'dockerhub.qingcloud.com/prometheus/node-exporter',
-      kubeRbacProxy: 'dockerhub.qingcloud.com/coreos/kube-rbac-proxy',
+      nodeExporter: 'kubesphere/node-exporter',
+      kubeRbacProxy: 'kubesphere/kube-rbac-proxy',
     },
   },
 
