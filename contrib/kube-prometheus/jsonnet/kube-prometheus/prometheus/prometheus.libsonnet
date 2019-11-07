@@ -76,7 +76,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
       local kubeSchedulerServicePort = servicePort.newNamed('http-metrics', 10251, 10251);
 
-      service.new('kube-scheduler', null, kubeSchedulerServicePort) +
+      service.new('kube-scheduler-headless', null, kubeSchedulerServicePort) +
       service.mixin.metadata.withNamespace('kube-system') +
       service.mixin.metadata.withLabels({ 'k8s-app': 'kube-scheduler' }) +
       service.mixin.spec.withClusterIp('None') +
@@ -87,7 +87,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
       local kubeControllerManagerServicePort = servicePort.newNamed('http-metrics', 10252, 10252);
 
-      service.new('kube-controller-manager', null, kubeControllerManagerServicePort) +
+      service.new('kube-controller-manager-headless', null, kubeControllerManagerServicePort) +
       service.mixin.metadata.withNamespace('kube-system') +
       service.mixin.metadata.withLabels({ 'k8s-app': 'kube-controller-manager' }) +
       service.mixin.spec.withClusterIp('None') +
