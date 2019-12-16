@@ -28,9 +28,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local clusterRoleBinding = k.rbac.v1.clusterRoleBinding;
 
       clusterRoleBinding.new() +
-      clusterRoleBinding.mixin.metadata.withName('prometheus-operator') +
+      clusterRoleBinding.mixin.metadata.withName('kubesphere-prometheus-operator') +
       clusterRoleBinding.mixin.roleRef.withApiGroup('rbac.authorization.k8s.io') +
-      clusterRoleBinding.mixin.roleRef.withName('prometheus-operator') +
+      clusterRoleBinding.mixin.roleRef.withName('kubesphere-prometheus-operator') +
       clusterRoleBinding.mixin.roleRef.mixinInstance({ kind: 'ClusterRole' }) +
       clusterRoleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-operator', namespace: $._config.namespace }]),
 
@@ -104,7 +104,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local rules = [apiExtensionsRule, monitoringRule, appsRule, coreRule, podRule, routingRule, nodeRule, namespaceRule];
 
       clusterRole.new() +
-      clusterRole.mixin.metadata.withName('prometheus-operator') +
+      clusterRole.mixin.metadata.withName('kubesphere-prometheus-operator') +
       clusterRole.withRules(rules),
 
     deployment:

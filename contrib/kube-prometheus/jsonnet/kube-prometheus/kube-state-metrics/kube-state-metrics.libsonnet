@@ -33,9 +33,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local clusterRoleBinding = k.rbac.v1.clusterRoleBinding;
 
       clusterRoleBinding.new() +
-      clusterRoleBinding.mixin.metadata.withName('kube-state-metrics') +
+      clusterRoleBinding.mixin.metadata.withName('kubesphere-kube-state-metrics') +
       clusterRoleBinding.mixin.roleRef.withApiGroup('rbac.authorization.k8s.io') +
-      clusterRoleBinding.mixin.roleRef.withName('kube-state-metrics') +
+      clusterRoleBinding.mixin.roleRef.withName('kubesphere-kube-state-metrics') +
       clusterRoleBinding.mixin.roleRef.mixinInstance({ kind: 'ClusterRole' }) +
       clusterRoleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'kube-state-metrics', namespace: $._config.namespace }]),
 
@@ -120,7 +120,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local rules = [coreRule, extensionsRule, appsRule, batchRule, autoscalingRule, authenticationRole, authorizationRole, policyRule];
 
       clusterRole.new() +
-      clusterRole.mixin.metadata.withName('kube-state-metrics') +
+      clusterRole.mixin.metadata.withName('kubesphere-kube-state-metrics') +
       clusterRole.withRules(rules),
     deployment:
       local deployment = k.apps.v1beta2.deployment;

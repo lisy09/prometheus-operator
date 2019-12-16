@@ -131,7 +131,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local rules = [nodeMetricsRule, metricsRule];
 
       clusterRole.new() +
-      clusterRole.mixin.metadata.withName('prometheus-' + $._config.prometheus.name) +
+      clusterRole.mixin.metadata.withName('kubesphere-prometheus-' + $._config.prometheus.name) +
       clusterRole.withRules(rules),
     roleConfig:
       local role = k.rbac.v1.role;
@@ -162,9 +162,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local clusterRoleBinding = k.rbac.v1.clusterRoleBinding;
 
       clusterRoleBinding.new() +
-      clusterRoleBinding.mixin.metadata.withName('prometheus-' + $._config.prometheus.name) +
+      clusterRoleBinding.mixin.metadata.withName('kubesphere-prometheus-' + $._config.prometheus.name) +
       clusterRoleBinding.mixin.roleRef.withApiGroup('rbac.authorization.k8s.io') +
-      clusterRoleBinding.mixin.roleRef.withName('prometheus-' + $._config.prometheus.name) +
+      clusterRoleBinding.mixin.roleRef.withName('kubesphere-prometheus-' + $._config.prometheus.name) +
       clusterRoleBinding.mixin.roleRef.mixinInstance({ kind: 'ClusterRole' }) +
       clusterRoleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + $._config.prometheus.name, namespace: $._config.namespace }]),
     prometheus:
