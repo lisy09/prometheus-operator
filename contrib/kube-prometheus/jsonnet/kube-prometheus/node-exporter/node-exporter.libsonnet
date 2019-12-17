@@ -20,9 +20,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local clusterRoleBinding = k.rbac.v1.clusterRoleBinding;
 
       clusterRoleBinding.new() +
-      clusterRoleBinding.mixin.metadata.withName('node-exporter') +
+      clusterRoleBinding.mixin.metadata.withName('kubesphere-node-exporter') +
       clusterRoleBinding.mixin.roleRef.withApiGroup('rbac.authorization.k8s.io') +
-      clusterRoleBinding.mixin.roleRef.withName('node-exporter') +
+      clusterRoleBinding.mixin.roleRef.withName('kubesphere-node-exporter') +
       clusterRoleBinding.mixin.roleRef.mixinInstance({ kind: 'ClusterRole' }) +
       clusterRoleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'node-exporter', namespace: $._config.namespace }]),
 
@@ -47,7 +47,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local rules = [authenticationRole, authorizationRole];
 
       clusterRole.new() +
-      clusterRole.mixin.metadata.withName('node-exporter') +
+      clusterRole.mixin.metadata.withName('kubesphere-node-exporter') +
       clusterRole.withRules(rules),
 
     daemonset:
