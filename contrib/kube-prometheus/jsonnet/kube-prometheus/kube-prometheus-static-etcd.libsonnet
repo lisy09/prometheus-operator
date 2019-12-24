@@ -1,6 +1,6 @@
 local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
-(import 'etcd-mixin/mixin.libsonnet') + {
+{
   _config+:: {
     etcd: {
       ips: [],

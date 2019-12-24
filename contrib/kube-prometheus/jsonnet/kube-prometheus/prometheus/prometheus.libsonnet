@@ -19,7 +19,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     prometheus+:: {
       name: 'k8s',
       systemName: 'k8s-system',
-      replicas: 1,
+      replicas: 2,
       rules: {},
       renderedRules: {},
       namespaces: ['default', 'kube-system', 'kubesphere-devops-system', 'istio-system', $._config.namespace],
@@ -103,6 +103,22 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
             role: 'alert-rules',
           },
           name: 'prometheus-' + $._config.prometheus.name + '-rules',
+          namespace: $._config.namespace,
+        },
+        spec: {
+          groups: $._config.prometheus.rules.groups,
+        },
+      },
+    [if $._config.prometheus.rules != null && $._config.prometheus.rules != {} then 'systemRules']:
+      {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'PrometheusRule',
+        metadata: {
+          labels: {
+            prometheus: $._config.prometheus.systemName,
+            role: 'alert-rules',
+          },
+          name: 'prometheus-' + $._config.prometheus.systemName + '-rules',
           namespace: $._config.namespace,
         },
         spec: {
@@ -245,8 +261,17 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
             role: 'alert-rules',
-            prometheus: $._config.prometheus.name,
+            prometheus: $._config.prometheus.systemName,
           }),
+          alerting: {
+            alertmanagers: [
+              {
+                namespace: $._config.namespace,
+                name: 'alertmanager-' + $._config.alertmanager.name,
+                port: 'web',
+              },
+            ],
+          },
           resources: resources,
           securityContext: {
             runAsUser: 0,
@@ -521,7 +546,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           jobLabel: 'k8s-app',
           selector: {
             matchLabels: {
-              'k8s-app': 'coredns',
+              'k8s-app': 'kube-dns',
             },
           },
           namespaceSelector: {

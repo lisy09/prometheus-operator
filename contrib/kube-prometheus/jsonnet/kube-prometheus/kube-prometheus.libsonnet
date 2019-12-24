@@ -51,6 +51,7 @@ local configMapList = k.core.v1.configMapList;
     kubeControllerManagerSelector: 'job="kube-controller-manager"',
     kubeApiserverSelector: 'job="apiserver"',
     coreDNSSelector: 'job="kube-dns"',
+    etcdSelector: 'job="etcd"',
     podLabel: 'pod',
 
     alertmanagerSelector: 'job="alertmanager-main"',
@@ -58,20 +59,15 @@ local configMapList = k.core.v1.configMapList;
     prometheusOperatorSelector: 'job="prometheus-operator"',
 
     jobs: {
-      Kubelet: $._config.kubeletSelector,
       KubeScheduler: $._config.kubeSchedulerSelector,
       KubeControllerManager: $._config.kubeControllerManagerSelector,
       KubeAPI: $._config.kubeApiserverSelector,
-      KubeStateMetrics: $._config.kubeStateMetricsSelector,
-      NodeExporter: $._config.nodeExporterSelector,
-      Alertmanager: $._config.alertmanagerSelector,
-      Prometheus: $._config.prometheusSelector,
-      PrometheusOperator: $._config.prometheusOperatorSelector,
       CoreDNS: $._config.coreDNSSelector,
+      Etcd: $._config.etcdSelector,
     },
 
     prometheus+:: {
-      rules: $.prometheusRules,
+      rules: $.prometheusRules + $.prometheusAlerts,
     },
 
     grafana+:: {
