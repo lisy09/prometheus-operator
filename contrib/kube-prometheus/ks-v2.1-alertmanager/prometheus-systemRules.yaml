@@ -2,9 +2,9 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    prometheus: k8s
+    prometheus: k8s-system
     role: alert-rules
-  name: prometheus-k8s-rules
+  name: prometheus-k8s-system-rules
   namespace: kubesphere-monitoring-system
 spec:
   groups:

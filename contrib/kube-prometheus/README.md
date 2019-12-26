@@ -150,7 +150,8 @@ Here's [example.jsonnet](example.jsonnet):
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
            (import 'kube-prometheus/kube-prometheus-tolerations.libsonnet') +
            (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + 
-           (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') + {
+           (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') + 
+           (import 'kube-prometheus/kube-prometheus-node-affinity.libsonnet') + {
   _config+:: {
     namespace: 'kubesphere-monitoring-system',
     etcd+:: {
@@ -167,6 +168,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
 { ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) }
 ```
