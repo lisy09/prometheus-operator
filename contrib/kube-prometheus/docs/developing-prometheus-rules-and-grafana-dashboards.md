@@ -13,9 +13,19 @@ As a basis, all examples in this guide are based on the base example of the kube
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
            (import 'kube-prometheus/kube-prometheus-tolerations.libsonnet') +
            (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + 
-           (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') + {
+           (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') + 
+           (import 'kube-prometheus/kube-prometheus-node-affinity.libsonnet') + {
   _config+:: {
     namespace: 'kubesphere-monitoring-system',
+    versions+:: {
+      prometheusOperator: 'v0.35.0',
+      configmapReloader: 'v0.3.0',
+    },
+    imageRepos+:: {
+      prometheusOperator: 'kubesphere/prometheus-operator',
+      configmapReloader: 'kubesphere/configmap-reload',
+      prometheusConfigReloader: 'kubesphere/prometheus-config-reloader',
+    },
     etcd+:: {
       ips: ['127.0.0.1'],
       clientCA: importstr 'examples/etcd-client-ca.crt',
