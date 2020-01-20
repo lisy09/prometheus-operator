@@ -6,7 +6,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
   _config+:: {
     namespace: 'kubesphere-monitoring-system',
     versions+:: {
-      prometheusOperator: 'v0.35.0',
+      prometheusOperator: 'v0.34.0',
       configmapReloader: 'v0.3.0',
     },
     imageRepos+:: {
