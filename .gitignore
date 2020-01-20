@@ -12,6 +12,8 @@ __pycache__
 .history/
 .vscode/
 tmp
+node_modules/
+package*.json
 
 # These are empty target files, created on every docker build. Their sole
 # purpose is to track the last target execution time to evalualte, whether the
