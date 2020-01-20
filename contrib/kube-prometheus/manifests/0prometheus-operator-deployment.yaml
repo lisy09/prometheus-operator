@@ -20,8 +20,8 @@ spec:
         - --kubelet-service=kube-system/kubelet
         - --logtostderr=true
         - --config-reloader-image=kubesphere/configmap-reload:v0.3.0
-        - --prometheus-config-reloader=kubesphere/prometheus-config-reloader:v0.35.0
-        image: kubesphere/prometheus-operator:v0.35.0
+        - --prometheus-config-reloader=kubesphere/prometheus-config-reloader:v0.34.0
+        image: kubesphere/prometheus-operator:v0.34.0
         name: prometheus-operator
         ports:
         - containerPort: 8080
