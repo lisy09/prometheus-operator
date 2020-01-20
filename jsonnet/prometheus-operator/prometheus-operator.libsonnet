@@ -22,6 +22,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     '0alertmanagerCustomResourceDefinition': import 'alertmanager-crd.libsonnet',
     '0prometheusCustomResourceDefinition': import 'prometheus-crd.libsonnet',
     '0servicemonitorCustomResourceDefinition': import 'servicemonitor-crd.libsonnet',
+    '0podmonitorCustomResourceDefinition': import 'podmonitor-crd.libsonnet',
     '0prometheusruleCustomResourceDefinition': import 'prometheusrule-crd.libsonnet',
 
     clusterRoleBinding:
@@ -53,6 +54,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                                'prometheuses/finalizers',
                                'alertmanagers/finalizers',
                                'servicemonitors',
+                               'podmonitors',
                                'prometheusrules',
                              ]) +
                              policyRule.withVerbs(['*']);
