@@ -4,9 +4,9 @@ OS?=linux
 ARCH?=amd64
 
 GO_PKG=github.com/coreos/prometheus-operator
-REPO?=quay.io/coreos/prometheus-operator
-REPO_PROMETHEUS_CONFIG_RELOADER?=quay.io/coreos/prometheus-config-reloader
-REPO_PROMETHEUS_OPERATOR_LINT?=quay.io/coreos/prometheus-operator-lint
+REPO?=kubesphere/prometheus-operator
+REPO_PROMETHEUS_CONFIG_RELOADER?=kubesphere/prometheus-config-reloader
+REPO_PROMETHEUS_OPERATOR_LINT?=kubesphere/prometheus-operator-lint
 TAG?=$(shell git rev-parse --short HEAD)
 VERSION?=$(shell cat VERSION | tr -d " \t\n\r")
 
