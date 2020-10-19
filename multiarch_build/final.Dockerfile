@@ -1,6 +1,5 @@
 FROM quay.io/prometheus/busybox:latest
 
-ARG %TARGET_PROJECT%
 ARG TARGETOS
 ARG TARGETARCH
 
